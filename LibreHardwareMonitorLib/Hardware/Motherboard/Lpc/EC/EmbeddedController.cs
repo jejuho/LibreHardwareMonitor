@@ -230,6 +230,10 @@ public abstract class EmbeddedController : Hardware
             BoardFamily.Intel700,
             ECSensor.TempWaterIn,
             ECSensor.TempWaterOut),
+        new(Model.ROG_MAXIMUS_Z790_APEX_ENCORE,
+            BoardFamily.Intel700,
+            ECSensor.TempTSensor,
+            ECSensor.TempDimmThermistor),
     };
 
     private static readonly Dictionary<BoardFamily, Dictionary<ECSensor, EmbeddedControllerSource>> _knownSensors = new()
@@ -313,9 +317,8 @@ public abstract class EmbeddedController : Hardware
         {
             BoardFamily.Intel700, new Dictionary<ECSensor, EmbeddedControllerSource>
             {
-                { ECSensor.TempWaterIn, new EmbeddedControllerSource("Water In", SensorType.Temperature, 0x0100, blank: -40) },
-                { ECSensor.TempWaterOut, new EmbeddedControllerSource("Water Out", SensorType.Temperature, 0x0101, blank: -40) },
-                { ECSensor.FanWaterFlow, new EmbeddedControllerSource("Water Flow", SensorType.Flow, 0x00be, 2, factor: 1.0f / 42f * 60f) } // todo: need validation for this calculation
+                { ECSensor.TempTSensor, new EmbeddedControllerSource("T Sensor", SensorType.Temperature, 0x0109, blank: -40) },
+                { ECSensor.TempDimmThermistor, new EmbeddedControllerSource("Dimm Thermistor", SensorType.Temperature, 0x0102, blank: -40) },
             }
         }
     };
@@ -510,6 +513,8 @@ public abstract class EmbeddedController : Hardware
 
         /// <summary>Water block temperature sensor reading [℃]</summary>
         TempWaterBlockIn,
+        /// <summary> Dimm Thermistor </summary>
+        TempDimmThermistor,
         Max
     }
 
